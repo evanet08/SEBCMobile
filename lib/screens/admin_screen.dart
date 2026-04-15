@@ -104,100 +104,102 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 
   // ═══════════════════════════════════════════════════════════
-  // GRID VIEW — Modules en grille centrée
+  // GRID VIEW — Modules ultra-compacts, centrés
   // ═══════════════════════════════════════════════════════════
   Widget _buildGrid() {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+    return Container(
+      color: const Color(0xFFF1F5F9),
+      child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            // Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0F1D35), Color(0xFF1A3A5C), Color(0xFF234B73)],
+          constraints: const BoxConstraints(maxWidth: 460),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              // Mini header
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(colors: [Color(0xFF0B1628), Color(0xFF1A3A5C)]),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                borderRadius: BorderRadius.circular(18),
+                child: Row(children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.asset('assets/images/logo_sebc.png', height: 28, width: 28, fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Icon(Icons.shield_rounded, size: 20, color: Colors.white)),
+                  ),
+                  const SizedBox(width: 10),
+                  Text('Administration SEBC', style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white)),
+                ]),
               ),
-              child: Row(children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
-                  child: const Icon(Icons.admin_panel_settings_rounded, size: 24, color: Colors.white),
-                ),
-                const SizedBox(width: 14),
-                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Panneau d\'administration', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
-                  Text('Gérez les configurations de l\'association', style: GoogleFonts.inter(fontSize: 11, color: Colors.white60)),
-                ])),
-              ]),
-            ),
 
-            // Grid
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 1.35,
+              // Grille 4 colonnes ultra-compacte
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 6,
+                  crossAxisSpacing: 6,
+                  childAspectRatio: 0.85,
+                ),
+                itemCount: _sections.length,
+                itemBuilder: (_, i) => _gridCard(_sections[i], _counts[_sections[i].key] ?? 0),
               ),
-              itemCount: _sections.length,
-              itemBuilder: (_, i) {
-                final s = _sections[i];
-                final count = _counts[s.key] ?? 0;
-                return _gridCard(s, count);
-              },
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );
   }
 
   Widget _gridCard(_Section s, int count) {
+    // Gradient pairs per section for premium look
+    final gradients = {
+      'parametres': [const Color(0xFF0369A1), const Color(0xFF0EA5E9)],
+      'pays': [const Color(0xFF047857), const Color(0xFF10B981)],
+      'provinces': [const Color(0xFF6D28D9), const Color(0xFFA78BFA)],
+      'cellules': [const Color(0xFFB45309), const Color(0xFFFBBF24)],
+      'types_ad': [const Color(0xFFBE123C), const Color(0xFFFB7185)],
+      'types_soutien': [const Color(0xFF0F766E), const Color(0xFF2DD4BF)],
+      'roles': [const Color(0xFF0F1D35), const Color(0xFF334155)],
+      'modules': [const Color(0xFF4338CA), const Color(0xFF818CF8)],
+    };
+    final colors = gradients[s.key] ?? [s.color, s.color.withValues(alpha: 0.7)];
+
     return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      elevation: 0,
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(10),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(10),
         onTap: () => _openSection(s.key),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFE2E8F0)),
+            gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: colors),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [BoxShadow(color: colors[0].withValues(alpha: 0.25), blurRadius: 8, offset: const Offset(0, 3))],
           ),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: s.color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
-                child: Icon(s.icon, size: 20, color: s.color),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(color: s.color.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
-                child: Text('$count', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w800, color: s.color)),
-              ),
-            ]),
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(s.label, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: const Color(0xFF0F172A))),
-              const SizedBox(height: 1),
-              Text('Gérer →', style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500)),
-            ]),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(s.icon, size: 22, color: Colors.white),
+            const SizedBox(height: 4),
+            Text(s.label, textAlign: TextAlign.center,
+              style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w700, color: Colors.white, height: 1.1),
+              maxLines: 2, overflow: TextOverflow.ellipsis),
+            const SizedBox(height: 3),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+              decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.25), borderRadius: BorderRadius.circular(6)),
+              child: Text('$count', style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white)),
+            ),
           ]),
         ),
       ),
     );
   }
+
 
   // ═══════════════════════════════════════════════════════════
   // CRUD VIEW — Liste détaillée pour la section active
