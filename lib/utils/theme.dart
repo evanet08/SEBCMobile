@@ -13,27 +13,27 @@ class SEBCColors {
   static const Color error = Color(0xFFDC2626);
   static const Color info = Color(0xFF0EA5E9);
 
-  // Surfaces — Telegram-style blue-tinted
-  static const Color background = Color(0xFFDAE2EB);
-  static const Color backgroundDark = Color(0xFFCDD7E3);
-  static const Color surface = Color(0xFFF0F3F7);
-  static const Color surfaceVariant = Color(0xFFE4EAF1);
-  static const Color cardBg = Color(0xFFF5F7FA);
+  // Surfaces — Telegram sky-blue
+  static const Color background = Color(0xFFD7E9F7);
+  static const Color backgroundDark = Color(0xFFC4DCF0);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceVariant = Color(0xFFF0F6FB);
+  static const Color cardBg = Color(0xFFFFFFFF);
 
   // Text
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF475569);
   static const Color textTertiary = Color(0xFF7C8FA3);
 
-  // Chat — Telegram tints
-  static const Color chatBg = Color(0xFFB7C7D8);
+  // Chat — Telegram
+  static const Color chatBg = Color(0xFFC4DCF0);
   static const Color chatSent = Color(0xFFEFFFDE);
-  static const Color chatRecv = Color(0xFFF0F3F7);
+  static const Color chatRecv = Color(0xFFFFFFFF);
 
   // App background gradient
   static const LinearGradient bgGradient = LinearGradient(
     begin: Alignment.topCenter, end: Alignment.bottomCenter,
-    colors: [Color(0xFFD5DDE7), Color(0xFFC3CFDD), Color(0xFFD0DAE5)],
+    colors: [Color(0xFFD7E9F7), Color(0xFFC4DCF0), Color(0xFFD0E4F4)],
   );
 
   // Gradients

@@ -42,7 +42,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
     final history = _meetings.where((m) => m.status == 'ended' || m.status == 'cancelled').toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFD5DDE7),
+      backgroundColor: const Color(0xFFD7E9F7),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0F1D35),
         foregroundColor: Colors.white,
@@ -81,7 +81,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
       return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
         Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(color: const Color(0xFFCBD5E1).withValues(alpha: 0.4), shape: BoxShape.circle),
+          decoration: BoxDecoration(color: const Color(0xFFBDD4EA).withValues(alpha: 0.4), shape: BoxShape.circle),
           child: Icon(emptyIcon, size: 48, color: const Color(0xFF94A3B8)),
         ),
         const SizedBox(height: 16),
@@ -112,9 +112,9 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F3F7),
+        color: const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFCBD5E1)),
+        border: Border.all(color: const Color(0xFFBDD4EA)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -144,7 +144,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: const Color(0xFFE8EDF3), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: const Color(0xFFF0F6FB), borderRadius: BorderRadius.circular(10)),
             child: Row(children: [
               _infoChip(Icons.calendar_today_rounded, m.scheduledDisplay),
               const SizedBox(width: 16),
@@ -236,7 +236,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
       builder: (ctx) => StatefulBuilder(builder: (ctx, setS) => Padding(
         padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(ctx).viewInsets.bottom + 20),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: const Color(0xFFCBD5E1), borderRadius: BorderRadius.circular(2)))),
+          Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: const Color(0xFFBDD4EA), borderRadius: BorderRadius.circular(2)))),
           const SizedBox(height: 20),
           Text('Planifier une réunion', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w800, color: const Color(0xFF0F172A))),
           const SizedBox(height: 4),
@@ -256,7 +256,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
             },
             child: Container(
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(color: const Color(0xFFE8EDF3), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFCBD5E1))),
+              decoration: BoxDecoration(color: const Color(0xFFF0F6FB), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFBDD4EA))),
               child: Row(children: [
                 const Icon(Icons.calendar_today_rounded, size: 18, color: Color(0xFF94A3B8)),
                 const SizedBox(width: 10),
@@ -268,7 +268,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14),
-            decoration: BoxDecoration(color: const Color(0xFFE8EDF3), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFCBD5E1))),
+            decoration: BoxDecoration(color: const Color(0xFFF0F6FB), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFBDD4EA))),
             child: DropdownButtonFormField<int>(
               value: duration,
               decoration: const InputDecoration(border: InputBorder.none, icon: Icon(Icons.timer_outlined, size: 18, color: Color(0xFF94A3B8))),
@@ -313,11 +313,11 @@ class _MeetingsScreenState extends State<MeetingsScreen> with SingleTickerProvid
   }
 
   Widget _inputField(TextEditingController ctrl, String hint, IconData icon) => Container(
-    decoration: BoxDecoration(color: const Color(0xFFE8EDF3), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFCBD5E1))),
+    decoration: BoxDecoration(color: const Color(0xFFF0F6FB), borderRadius: BorderRadius.circular(12), border: Border.all(color: const Color(0xFFBDD4EA))),
     child: TextField(
       controller: ctrl,
       style: GoogleFonts.inter(fontSize: 14),
-      decoration: InputDecoration(hintText: hint, hintStyle: GoogleFonts.inter(color: const Color(0xFFCBD5E1)),
+      decoration: InputDecoration(hintText: hint, hintStyle: GoogleFonts.inter(color: const Color(0xFFBDD4EA)),
         prefixIcon: Icon(icon, size: 18, color: const Color(0xFF94A3B8)),
         border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(vertical: 14)),
     ),

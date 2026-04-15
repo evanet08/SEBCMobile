@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final m = AuthProvider.instance.membre;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFD5DDE7),
+      backgroundColor: const Color(0xFFD7E9F7),
       body: _loading
         ? const Center(child: CircularProgressIndicator())
         : CustomScrollView(slivers: [
@@ -183,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: const Color(0xFF0F172A)));
 
   Widget _infoCard(List<Widget> children) => Container(
-    decoration: BoxDecoration(color: const Color(0xFFF0F3F7), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFFCBD5E1))),
+    decoration: BoxDecoration(color: const Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFFBDD4EA))),
     child: Column(children: children),
   );
 
@@ -205,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isDense: true, contentPadding: EdgeInsets.zero,
                 border: InputBorder.none,
                 hintText: 'Saisir...',
-                hintStyle: GoogleFonts.inter(color: const Color(0xFFCBD5E1)),
+                hintStyle: GoogleFonts.inter(color: const Color(0xFFBDD4EA)),
               ),
             )
           else

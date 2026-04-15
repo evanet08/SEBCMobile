@@ -106,7 +106,7 @@ class HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                 decoration: BoxDecoration(color: const Color(0xFFE83350), borderRadius: BorderRadius.circular(10)),
-                child: Text('$badge', style: GoogleFonts.inter(color: const Color(0xFFF0F3F7), fontSize: 9, fontWeight: FontWeight.w700)),
+                child: Text('$badge', style: GoogleFonts.inter(color: const Color(0xFFFFFFFF), fontSize: 9, fontWeight: FontWeight.w700)),
               ),
             ),
           ]),
@@ -155,7 +155,7 @@ class _DashboardTabState extends State<_DashboardTab> {
     final filleuls = (_profileData?['filleuls_en_attente'] as List?) ?? [];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFD5DDE7),
+      backgroundColor: const Color(0xFFD7E9F7),
       body: CustomScrollView(slivers: [
         // ── App Bar ──
         SliverAppBar(
@@ -190,7 +190,7 @@ class _DashboardTabState extends State<_DashboardTab> {
                       const SizedBox(width: 14),
                       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Text('Bienvenue,', style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.6), fontSize: 12)),
-                        Text(m?.nomComplet ?? 'Membre SEBC', style: GoogleFonts.inter(color: const Color(0xFFF0F3F7), fontSize: 18, fontWeight: FontWeight.w700)),
+                        Text(m?.nomComplet ?? 'Membre SEBC', style: GoogleFonts.inter(color: const Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.w700)),
                       ])),
                       IconButton(
                         icon: Icon(Icons.logout_rounded, color: Colors.white.withValues(alpha: 0.6), size: 20),
@@ -261,9 +261,9 @@ class _DashboardTabState extends State<_DashboardTab> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFF0F3F7),
+                color: const Color(0xFFFFFFFF),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFCBD5E1)),
+                border: Border.all(color: const Color(0xFFBDD4EA)),
               ),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
@@ -320,7 +320,7 @@ class _DashboardTabState extends State<_DashboardTab> {
   );
 
   Widget _moduleCard(IconData icon, String title, String sub, Color color, VoidCallback? onTap) => Material(
-    color: const Color(0xFFF0F3F7),
+    color: const Color(0xFFFFFFFF),
     borderRadius: BorderRadius.circular(16),
     child: InkWell(
       borderRadius: BorderRadius.circular(16),
