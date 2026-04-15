@@ -43,4 +43,14 @@ class ApiConfig {
 
   // Reference Data
   static const String refData = '$baseUrl/ref-data/';
+
+  // Admin CRUD
+  static const String adminParametres = '$baseUrl/admin/parametres/';
+  static const String adminPays = '$baseUrl/admin/pays/';
+  static const String adminProvinces = '$baseUrl/admin/provinces/';
+  static const String adminCellules = '$baseUrl/admin/cellules/';
+  static const String adminTypesAD = '$baseUrl/admin/types-ad/';
+  static const String adminTypesSoutien = '$baseUrl/admin/types-soutien/';
+  static const String adminRoles = '$baseUrl/admin/roles/';
+  static const String adminModules = '$baseUrl/admin/modules/';
 }

@@ -8,8 +8,9 @@ import 'login_screen.dart';
 import 'profile_screen.dart';
 import 'communication_screen.dart';
 import 'meetings_screen.dart';
+import 'admin_screen.dart';
 
-/// Home Screen — Bottom Navigation avec 4 onglets
+/// Home Screen — Bottom Navigation avec 5 onglets
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
   @override State<HomeScreen> createState() => HomeScreenState();
@@ -30,6 +31,7 @@ class HomeScreenState extends State<HomeScreen> {
       const _DashboardTab(),
       const CommunicationScreen(),
       const MeetingsScreen(),
+      const AdminScreen(),
       const ProfileScreen(),
     ]);
     _fetchUnread();
@@ -59,19 +61,20 @@ class HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 16, offset: const Offset(0, -4))],
+          color: const Color(0xFF0F1D35),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, -4))],
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _navItem(0, Icons.home_rounded, 'Accueil'),
-                _navItem(1, Icons.chat_rounded, 'Messages', badge: _unreadCount),
-                _navItem(2, Icons.videocam_rounded, 'Réunions'),
-                _navItem(3, Icons.person_rounded, 'Profil'),
+                _navItem(0, Icons.dashboard_rounded, 'Accueil'),
+                _navItem(1, Icons.forum_rounded, 'Messages', badge: _unreadCount),
+                _navItem(2, Icons.event_rounded, 'Réunions'),
+                _navItem(3, Icons.admin_panel_settings_rounded, 'Admin'),
+                _navItem(4, Icons.account_circle_rounded, 'Profil'),
               ],
             ),
           ),
@@ -86,31 +89,31 @@ class HomeScreenState extends State<HomeScreen> {
       onTap: () => setState(() => _currentIndex = index),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
-        width: 70,
+        width: 64,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Stack(clipBehavior: Clip.none, children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.all(8),
+              duration: const Duration(milliseconds: 250),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: active ? SEBCColors.primary.withValues(alpha: 0.1) : Colors.transparent,
+                color: active ? Colors.white.withValues(alpha: 0.12) : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 24, color: active ? SEBCColors.primary : SEBCColors.textTertiary),
+              child: Icon(icon, size: 22, color: active ? Colors.white : Colors.white.withValues(alpha: 0.4)),
             ),
             if (badge > 0) Positioned(
-              top: 0, right: -4,
+              top: -2, right: 0,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                decoration: BoxDecoration(color: SEBCColors.accent, borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: const Color(0xFFE83350), borderRadius: BorderRadius.circular(10)),
                 child: Text('$badge', style: GoogleFonts.inter(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w700)),
               ),
             ),
           ]),
-          const SizedBox(height: 2),
+          const SizedBox(height: 3),
           Text(label, style: GoogleFonts.inter(
-            fontSize: 10, fontWeight: active ? FontWeight.w600 : FontWeight.w400,
-            color: active ? SEBCColors.primary : SEBCColors.textTertiary,
+            fontSize: 9, fontWeight: active ? FontWeight.w600 : FontWeight.w400,
+            color: active ? Colors.white : Colors.white.withValues(alpha: 0.4),
           )),
         ]),
       ),
@@ -119,136 +122,223 @@ class HomeScreenState extends State<HomeScreen> {
 }
 
 // ═══ Dashboard Tab ═══
-class _DashboardTab extends StatelessWidget {
+class _DashboardTab extends StatefulWidget {
   const _DashboardTab();
+  @override State<_DashboardTab> createState() => _DashboardTabState();
+}
+
+class _DashboardTabState extends State<_DashboardTab> {
+  final _api = ApiService();
+  Map<String, dynamic>? _profileData;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final r = await _api.getProfile();
+    if (r['success'] == true && mounted) {
+      setState(() { _profileData = r['membre']; _loading = false; });
+      AuthProvider.instance.setMembreFromJson(r['membre']);
+    } else {
+      setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final auth = AuthProvider.instance;
     final m = auth.membre;
+    final filleuls = (_profileData?['filleuls_en_attente'] as List?) ?? [];
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SEBC Dushigikirane', style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout_rounded),
-            onPressed: () async {
-              await auth.logout();
-              if (!context.mounted) return;
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          // Welcome card
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: SEBCColors.primaryGradient,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [BoxShadow(color: SEBCColors.primary.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 8))],
-            ),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(children: [
-                Container(
-                  width: 50, height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Center(child: Text(
-                    (m?.prenom.isNotEmpty == true ? m!.prenom[0] : 'S').toUpperCase(),
-                    style: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white),
-                  )),
-                ),
-                const SizedBox(width: 14),
-                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Bienvenue,', style: GoogleFonts.inter(color: Colors.white70, fontSize: 13)),
-                  Text(m?.nomComplet ?? 'Membre', style: GoogleFonts.inter(
-                    color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
-                ])),
-              ]),
-              const SizedBox(height: 14),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '${m?.role ?? 'MEMBRE'} • ${m?.celluleCode ?? 'Aucune cellule'}',
-                  style: GoogleFonts.inter(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+      backgroundColor: const Color(0xFFF1F5F9),
+      body: CustomScrollView(slivers: [
+        // ── App Bar ──
+        SliverAppBar(
+          expandedHeight: 180,
+          pinned: true,
+          backgroundColor: const Color(0xFF0F1D35),
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft, end: Alignment.bottomRight,
+                  colors: [Color(0xFF0B1628), Color(0xFF1A3A5C), Color(0xFF234B73)],
                 ),
               ),
-            ]),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Row(children: [
+                      Container(
+                        width: 48, height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                        ),
+                        child: Center(child: Text(
+                          (m?.prenom.isNotEmpty == true ? m!.prenom[0] : 'S').toUpperCase(),
+                          style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w800, color: Colors.white),
+                        )),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text('Bienvenue,', style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.6), fontSize: 12)),
+                        Text(m?.nomComplet ?? 'Membre SEBC', style: GoogleFonts.inter(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+                      ])),
+                      IconButton(
+                        icon: Icon(Icons.logout_rounded, color: Colors.white.withValues(alpha: 0.6), size: 20),
+                        onPressed: () async {
+                          await auth.logout();
+                          if (!context.mounted) return;
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+                        },
+                      ),
+                    ]),
+                    const SizedBox(height: 10),
+                    Row(children: [
+                      _statusChip(m?.role ?? 'MEMBRE', Colors.white.withValues(alpha: 0.12)),
+                      const SizedBox(width: 6),
+                      _statusChip(m?.statut ?? 'EN_ATTENTE', _statutBgColor(m?.statut)),
+                      if (m?.celluleCode != null) ...[
+                        const SizedBox(width: 6),
+                        _statusChip(m!.celluleCode!, Colors.white.withValues(alpha: 0.08)),
+                      ],
+                    ]),
+                  ]),
+                ),
+              ),
+            ),
           ),
+        ),
 
-          const SizedBox(height: 24),
-          Text('Modules', style: GoogleFonts.inter(fontSize: 17, fontWeight: FontWeight.w700, color: SEBCColors.textPrimary)),
-          const SizedBox(height: 12),
+        // ── Content ──
+        SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverList(delegate: SliverChildListDelegate([
+            // ── Filleuls en attente (alerte) ──
+            if (filleuls.isNotEmpty) ...[
+              _alertCard(
+                icon: Icons.people_alt_rounded,
+                color: const Color(0xFFD97706),
+                title: '${filleuls.length} filleul(s) en attente de validation',
+                action: 'Voir',
+                onTap: () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(4),
+              ),
+              const SizedBox(height: 12),
+            ],
 
-          // Module cards
-          _ModuleCard(
-            icon: Icons.chat_rounded, color: SEBCColors.info, label: 'Communication',
-            sub: 'Messagerie et appels vidéo',
-            onTap: () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(1),
+            // ── Modules ──
+            Text('Modules', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: const Color(0xFF0F172A))),
+            const SizedBox(height: 12),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.5,
+              children: [
+                _moduleCard(Icons.forum_rounded, 'Communication', 'Messagerie', const Color(0xFF0EA5E9),
+                  () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(1)),
+                _moduleCard(Icons.event_rounded, 'Réunions', 'Planifier & rejoindre', const Color(0xFF0D9488),
+                  () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(2)),
+                _moduleCard(Icons.admin_panel_settings_rounded, 'Administration', 'Gestion membres', const Color(0xFF7C3AED),
+                  () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(3)),
+                _moduleCard(Icons.account_circle_rounded, 'Mon Espace', 'Profil & documents', const Color(0xFF1A3A5C),
+                  () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(4)),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+            // ── Infos SEBC ──
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+              ),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Row(children: [
+                  const Icon(Icons.info_outline_rounded, size: 18, color: Color(0xFF1A3A5C)),
+                  const SizedBox(width: 8),
+                  Text('S.E.B.C Dushigikirane', style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w700, color: const Color(0xFF1A3A5C))),
+                ]),
+                const SizedBox(height: 8),
+                Text(
+                  'Soutien Entre Burundais du Canada — Association d\'entraide mutuelle pour la communauté burundaise au Canada.',
+                  style: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF64748B), height: 1.5),
+                ),
+              ]),
+            ),
+            const SizedBox(height: 80),
+          ])),
+        ),
+      ]),
+    );
+  }
+
+  Widget _statusChip(String label, Color bg) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
+    child: Text(label, style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.white)),
+  );
+
+  Color _statutBgColor(String? s) {
+    switch (s) {
+      case 'APPROUVE': return const Color(0xFF059669).withValues(alpha: 0.4);
+      case 'EN_ATTENTE': return const Color(0xFFD97706).withValues(alpha: 0.4);
+      case 'REJETE': return const Color(0xFFDC2626).withValues(alpha: 0.4);
+      default: return Colors.white.withValues(alpha: 0.12);
+    }
+  }
+
+  Widget _alertCard({required IconData icon, required Color color, required String title, required String action, required VoidCallback onTap}) => Container(
+    padding: const EdgeInsets.all(14),
+    decoration: BoxDecoration(
+      color: color.withValues(alpha: 0.08),
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: color.withValues(alpha: 0.2)),
+    ),
+    child: Row(children: [
+      Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10)),
+        child: Icon(icon, size: 20, color: color),
+      ),
+      const SizedBox(width: 12),
+      Expanded(child: Text(title, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: color))),
+      TextButton(onPressed: onTap, child: Text(action, style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: color))),
+    ]),
+  );
+
+  Widget _moduleCard(IconData icon, String title, String sub, Color color, VoidCallback? onTap) => Material(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+            child: Icon(icon, color: color, size: 22),
           ),
-          const SizedBox(height: 10),
-          _ModuleCard(
-            icon: Icons.videocam_rounded, color: SEBCColors.teal, label: 'Réunions',
-            sub: 'Planifier et rejoindre des réunions',
-            onTap: () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(2),
-          ),
-          const SizedBox(height: 10),
-          _ModuleCard(
-            icon: Icons.person_rounded, color: SEBCColors.primary, label: 'Mon Espace',
-            sub: 'Profil, ayants droits, documents',
-            onTap: () => context.findAncestorStateOfType<HomeScreenState>()?.navigateTo(3),
-          ),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: const Color(0xFF0F172A))),
+            Text(sub, style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF94A3B8))),
+          ]),
         ]),
       ),
-    );
-  }
-}
-
-class _ModuleCard extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final String label;
-  final String sub;
-  final VoidCallback? onTap;
-
-  const _ModuleCard({required this.icon, required this.color, required this.label, required this.sub, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(children: [
-            Container(
-              width: 46, height: 46,
-              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(14)),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(width: 14),
-            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(label, style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600, color: SEBCColors.textPrimary)),
-              Text(sub, style: GoogleFonts.inter(fontSize: 12, color: SEBCColors.textSecondary)),
-            ])),
-            const Icon(Icons.chevron_right_rounded, color: SEBCColors.textTertiary),
-          ]),
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }

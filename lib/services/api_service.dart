@@ -150,4 +150,17 @@ class ApiService {
 
   // ═══ REF DATA ═══
   Future<Map<String, dynamic>> getRefData() => get(ApiConfig.refData);
+
+  // ═══ ADMIN CRUD ═══
+  Future<Map<String, dynamic>> adminCrud(String endpoint, Map<String, dynamic> data) =>
+      post(endpoint, data);
+
+  Future<Map<String, dynamic>> adminParametres(Map<String, dynamic> d) => adminCrud(ApiConfig.adminParametres, d);
+  Future<Map<String, dynamic>> adminPays(Map<String, dynamic> d) => adminCrud(ApiConfig.adminPays, d);
+  Future<Map<String, dynamic>> adminProvinces(Map<String, dynamic> d) => adminCrud(ApiConfig.adminProvinces, d);
+  Future<Map<String, dynamic>> adminCellules(Map<String, dynamic> d) => adminCrud(ApiConfig.adminCellules, d);
+  Future<Map<String, dynamic>> adminTypesAD(Map<String, dynamic> d) => adminCrud(ApiConfig.adminTypesAD, d);
+  Future<Map<String, dynamic>> adminTypesSoutien(Map<String, dynamic> d) => adminCrud(ApiConfig.adminTypesSoutien, d);
+  Future<Map<String, dynamic>> adminRoles(Map<String, dynamic> d) => adminCrud(ApiConfig.adminRoles, d);
+  Future<Map<String, dynamic>> adminModules(Map<String, dynamic> d) => adminCrud(ApiConfig.adminModules, d);
 }

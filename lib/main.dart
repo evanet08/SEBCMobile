@@ -82,27 +82,36 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(gradient: SEBCColors.primaryGradient),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft, end: Alignment.bottomRight,
+            colors: [Color(0xFF0B1628), Color(0xFF122240), Color(0xFF1A3050), Color(0xFF0F1D35)],
+          ),
+        ),
         child: Center(
           child: FadeTransition(
             opacity: _fadeAnim,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Container(
-                width: 100, height: 100,
+                width: 90, height: 90,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1.5),
                 ),
-                child: const Icon(Icons.people_alt_rounded, size: 52, color: Colors.white),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(22),
+                  child: Image.asset('assets/images/logo_sebc.png', fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(Icons.people_alt_rounded, size: 44, color: Colors.white)),
+                ),
               ),
-              const SizedBox(height: 24),
-              const Text('SEBC', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 4)),
+              const SizedBox(height: 20),
+              const Text('S.E.B.C', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 6)),
               const SizedBox(height: 4),
-              Text('Dushigikirane', style: TextStyle(fontSize: 16, color: Colors.white.withValues(alpha: 0.8), fontWeight: FontWeight.w300, letterSpacing: 2)),
+              Text('Dushigikirane', style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.6), fontWeight: FontWeight.w300, letterSpacing: 3)),
               const SizedBox(height: 30),
-              SizedBox(width: 24, height: 24, child: CircularProgressIndicator(
-                strokeWidth: 2, valueColor: AlwaysStoppedAnimation(Colors.white.withValues(alpha: 0.6)),
+              SizedBox(width: 22, height: 22, child: CircularProgressIndicator(
+                strokeWidth: 2, valueColor: AlwaysStoppedAnimation(Colors.white.withValues(alpha: 0.4)),
               )),
             ]),
           ),
