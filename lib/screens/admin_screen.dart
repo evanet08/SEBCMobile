@@ -75,7 +75,7 @@ class _AdminScreenState extends State<AdminScreen> {
     final isAdmin = AuthProvider.instance.membre?.isGestionnaire ?? false;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9),
+      backgroundColor: const Color(0xFFD5DDE7),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0F1D35),
         foregroundColor: Colors.white,
@@ -108,7 +108,7 @@ class _AdminScreenState extends State<AdminScreen> {
   // ═══════════════════════════════════════════════════════════
   Widget _buildGrid() {
     return Container(
-      color: const Color(0xFFF1F5F9),
+      color: const Color(0xFFD5DDE7),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 460),
@@ -186,7 +186,7 @@ class _AdminScreenState extends State<AdminScreen> {
             Icon(s.icon, size: 22, color: Colors.white),
             const SizedBox(height: 4),
             Text(s.label, textAlign: TextAlign.center,
-              style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w700, color: Colors.white, height: 1.1),
+              style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w700, color: const Color(0xFFF0F3F7), height: 1.1),
               maxLines: 2, overflow: TextOverflow.ellipsis),
             const SizedBox(height: 3),
             Container(
@@ -212,7 +212,7 @@ class _AdminScreenState extends State<AdminScreen> {
       // Action bar
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: const BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0)))),
+        decoration: const BoxDecoration(color: const Color(0xFFF0F3F7), border: Border(bottom: BorderSide(color: Color(0xFFCBD5E1)))),
         child: Row(children: [
           Container(
             padding: const EdgeInsets.all(6),
@@ -278,9 +278,9 @@ class _AdminScreenState extends State<AdminScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 6),
       decoration: BoxDecoration(
-        color: index.isEven ? Colors.white : const Color(0xFFFAFBFC),
+        color: index.isEven ? const Color(0xFFF0F3F7) : const Color(0xFFE8EDF3),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: const Color(0xFFCBD5E1)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -412,7 +412,7 @@ class _AdminScreenState extends State<AdminScreen> {
       builder: (ctx) => Padding(
         padding: EdgeInsets.fromLTRB(20, 16, 20, MediaQuery.of(ctx).viewInsets.bottom + 16),
         child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: const Color(0xFFE2E8F0), borderRadius: BorderRadius.circular(2)))),
+          Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: const Color(0xFFCBD5E1), borderRadius: BorderRadius.circular(2)))),
           const SizedBox(height: 16),
           Text(action, style: GoogleFonts.inter(fontSize: 17, fontWeight: FontWeight.w800, color: const Color(0xFF0F172A))),
           const SizedBox(height: 16),
@@ -425,8 +425,8 @@ class _AdminScreenState extends State<AdminScreen> {
                 labelText: e.value,
                 labelStyle: GoogleFonts.inter(fontSize: 12, color: const Color(0xFF94A3B8)),
                 filled: true, fillColor: const Color(0xFFF8FAFC),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFCBD5E1))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFCBD5E1))),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               ),
             ),

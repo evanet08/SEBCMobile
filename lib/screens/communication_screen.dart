@@ -112,7 +112,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
         // Search
         Container(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          color: Colors.white,
+          color: const Color(0xFFF0F3F7),
           child: TextField(
             controller: _searchCtrl,
             onChanged: (v) => setState(() => _filter = v.toLowerCase()),
@@ -213,7 +213,7 @@ class _ContactTile extends StatelessWidget {
     final unread = contact.unread;
 
     return Material(
-      color: Colors.white,
+      color: const Color(0xFFF0F3F7),
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -223,7 +223,7 @@ class _ContactTile extends StatelessWidget {
             Container(
               width: 48, height: 48,
               decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              child: Icon(_icon, color: Colors.white, size: 22),
+              child: Icon(_icon, color: const Color(0xFFF0F3F7), size: 22),
             ),
             const SizedBox(width: 12),
             // Info
@@ -242,7 +242,7 @@ class _ContactTile extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(color: SEBCColors.accent, borderRadius: BorderRadius.circular(10)),
-                  child: Text('$unread', style: GoogleFonts.inter(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700)),
+                  child: Text('$unread', style: GoogleFonts.inter(color: const Color(0xFFF0F3F7), fontSize: 10, fontWeight: FontWeight.w700)),
                 ),
               ],
             ]),
